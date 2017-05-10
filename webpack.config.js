@@ -5,7 +5,8 @@ const config = {
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build')
+    path: path.resolve(__dirname, 'build'),
+    publicPath: 'build/'
   },
 	module: {
 		rules: [
@@ -14,11 +15,25 @@ const config = {
 				test: /\.js$/
 			},
 			{
-				loader: ExtractTextPlugin.extract({
-					loader: 'css-loader'
+				use: ExtractTextPlugin.extract({
+					use: 'css-loader'
 				}),
 				test: /\.css$/
+			},
+			{
+				use: [
+					{
+						loader: 'url-loader',
+						options: { limit: 40000 }
+					},
+					{
+    				loader: 'image-webpack-loader',
+    				options: {}
+					}
+				],
+				test: /\.(jpe?g|png|gif|svg)$/
 			}
+
 		]
 	},
 	plugins: [
